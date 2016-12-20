@@ -24,13 +24,13 @@ class AComponent extends Compoent {
 ```javascript
 import React, Component from 'react';
 import { listener } from 'hacksaw-react';
-import { Product } from '../models';
+import { ProductStore } from '../stores';
 
-@listener(Product.context('search'))
+@listener(ProductStore.context('search'))
 class Search extends Component {
   get store() {
     const { query } = this.props.location;
-    return Product.context('search', query);
+    return ProductStore.context('search', query);
   }
 
   componentWillMount() {
