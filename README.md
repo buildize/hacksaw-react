@@ -14,6 +14,25 @@ npm install hacksaw-react
 ```javascript
 import { listener } from 'hacksaw-react';
 
+@listener(props => ({
+  store1: Store1.context(...),
+  store2: Store2.context(...),
+  ...
+}))
+class AComponent extends Compoent {
+  render() {
+    const { store1, store2 } = this.props;
+    const items = store1.all;
+    ...
+  }
+}
+```
+
+or
+
+```javascript
+import { listener } from 'hacksaw-react';
+
 @listener(context1, context2, ...)
 class AComponent extends Compoent {
   // ....
