@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const isStoreOrView = (obj) => obj.store || obj.view;
+
 export default (...objects) => {
   return Klass => {
     return class extends Component {
@@ -9,7 +11,7 @@ export default (...objects) => {
 
       componentWillMount() {
         objects.forEach(obj => {
-          if (obj.context) { // it's store
+          if (isStoreOrView(obj)) { // it's store
             obj.listen(this.rerender);
           } else { // it's function
             this.storeProps = obj(this.props);
@@ -23,7 +25,7 @@ export default (...objects) => {
 
       componentWillReceiveProps(nextProps) {
         objects.forEach(obj => {
-          if (obj.context) return;
+          if (isStoreOrView(obj)) return;
 
           Object.keys(this.storeProps).forEach(key => {
             this.storeProps[key].unlisten(this.rerender);
@@ -39,7 +41,7 @@ export default (...objects) => {
 
       componentWillUnmount() {
         objects.forEach(obj => {
-          if (obj.context) { // it's store
+          if (isStoreOrView(obj)) { // it's store
             obj.unlisten(this.rerender);
           } else { // it's function
             this.storeProps = obj(this.props);
