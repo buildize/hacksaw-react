@@ -1,6 +1,8 @@
 import { createStore } from 'hacksaw';
 import { listener } from '../../src';
 import React, { Component } from 'react';
+import { mount } from 'enzyme';
+import sinon from 'sinon';
 
 describe('listener', () => {
   it('re-render the component correctly', () => {
@@ -15,14 +17,14 @@ describe('listener', () => {
 
     sinon.spy(MyComponent.prototype, 'setState');
     const wrapper = mount(<MyComponent />);
-    expect(MyComponent.prototype.setState).to.have.property('callCount', 0);
+    expect(MyComponent.prototype.setState.callCount).toEqual(0);
 
     store.view('search').products.put({ id: 1, name: 'test' });
-    expect(MyComponent.prototype.setState).to.have.property('callCount', 1);
+    expect(MyComponent.prototype.setState.callCount).toEqual(1);
 
     wrapper.unmount();
     store.view('search').products.put({ id: 2, name: 'test2' });
-    expect(MyComponent.prototype.setState).to.have.property('callCount', 1);
+    expect(MyComponent.prototype.setState.callCount).toEqual(1);
   });
 
   it ('allows function arguments', () => {
@@ -48,13 +50,13 @@ describe('listener', () => {
 
     store.view('query1').products.put({ id: 1, name: 'q1' });
     store.view('query2').products.put({ id: 2, name: 'q2' });
-    expect(wrapper.html()).to.eq('<div><span>q1</span></div>');
+    expect(wrapper.html()).toEqual('<div><span>q1</span></div>');
 
     wrapper.setProps({ query: 'query2' });
     store.view('query2').products.put({ id: 3, name: 'q3' });
-    expect(wrapper.html()).to.eq('<div><span>q2</span><span>q3</span></div>');
-    expect(store.view('query1').callbacks).to.eql([]);
+    expect(wrapper.html()).toEqual('<div><span>q2</span><span>q3</span></div>');
+    expect(store.view('query1').callbacks).toEqual([]);
     wrapper.unmount();
-    expect(store.view('query2').callbacks).to.eql([]);
+    expect(store.view('query2').callbacks).toEqual([]);
   });
 });

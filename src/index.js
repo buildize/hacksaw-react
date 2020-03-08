@@ -1,1 +1,3 @@
-export listener from './listener';
+import listener from './listener';
+
+export { listener };
