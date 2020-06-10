@@ -78,5 +78,36 @@ describe('hooks', () => {
 
       expect(renderCount).toEqual(2);
     });
+
+    it('renders the view after name change', () => {
+      let renderCount = 0;
+
+      const TheComponent = ({ name }) => {
+        const store = useView(name);
+        renderCount++;
+        return <div />
+      };
+
+      const wrapper = mount(
+        React.createElement(
+          props => <Provider store={store}><TheComponent name={props.name} /></Provider>,
+          { name: 'name1' }
+        )
+      );
+
+      expect(renderCount).toEqual(1);
+
+      act(() => {
+        wrapper.setProps({ name: 'name2' });
+      });
+
+      expect(renderCount).toEqual(2);
+
+      act(() => {
+        store.view('name2').products.put({ id: 111 });
+      });
+
+      expect(renderCount).toEqual(3);
+    });
   });
 })

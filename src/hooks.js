@@ -9,7 +9,7 @@ const useStoreOrView = (isStore, args) => {
     const listener = () => setState({});
     storeOrView.listen(listener);
     return () => storeOrView.unlisten(listener);
-  }, []);
+  }, [args]);
 
   return storeOrView;
 }
